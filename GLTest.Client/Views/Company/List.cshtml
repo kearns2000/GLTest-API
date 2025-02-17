@@ -1,0 +1,99 @@
+﻿@model List<GLTest.Client.Models.Company>
+@{
+    ViewData["Title"] = "Companies";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Companies</h1>
+
+    <!-- Search Bar -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" id="searchId" class="form-control" placeholder="filter by ID">
+        </div>
+        <div class="col-md-4">
+            <input type="text" id="searchIsin" class="form-control" placeholder="filter by ISIN">
+        </div>
+    </div>
+
+    <!-- Sortable Table -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th><a href="#" onclick="sortTable(0)">ID</a></th>
+                    <th><a href="#" onclick="sortTable(1)">Name</a></th>
+                    <th><a href="#" onclick="sortTable(2)">Exchange</a></th>
+                    <th><a href="#" onclick="sortTable(3)">Ticker</a></th>
+                    <th><a href="#" onclick="sortTable(4)">ISIN</a></th>
+                    <th><a href="#" onclick="sortTable(5)">Website</a></th>
+                    <th><a href="#" onclick="sortTable(6)">Created</a></th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="companyTable">
+                @foreach (var company in Model)
+                {
+                    <tr id="row-@company.Id">
+                        <td>@company.Id</td>
+                        <td>@company.Name</td>
+                        <td>@company.Exchange</td>
+                        <td>@company.Ticker</td>
+                        <td>@company.Isin</td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(company.Website))
+                            {
+                                <a href="@company.Website" target="_blank">@company.Website.ToString()</a>
+                            }
+                            else
+                            {
+                                <span>-</span>
+                            }
+                        </td>
+                        <td>@company.DateCreated.ToString("yyyy-MM-dd")</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="@Url.Action("Edit", "Company", new { id = company.Id })" class="btn btn-primary btn-sm">Edit</a>
+                        
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+   
+    function sortTable(columnIndex) {
+        let table = document.getElementById("companyTable");
+        let rows = Array.from(table.getElementsByTagName("tr"));
+        let sortedRows = rows.sort((a, b) => {
+            let cellA = a.getElementsByTagName("td")[columnIndex].innerText.toLowerCase();
+            let cellB = b.getElementsByTagName("td")[columnIndex].innerText.toLowerCase();
+            return cellA.localeCompare(cellB);
+        });
+
+        table.innerHTML = "";
+        sortedRows.forEach(row => table.appendChild(row));
+    }
+
+    document.getElementById("searchId").addEventListener("input", function () {
+        filterTable(0, this.value);
+    });
+
+    document.getElementById("searchIsin").addEventListener("input", function () {
+        filterTable(4, this.value);
+    });
+
+    function filterTable(columnIndex, query) {
+        let rows = document.querySelectorAll("#companyTable tr");
+        rows.forEach(row => {
+            let cell = row.getElementsByTagName("td")[columnIndex];
+            if (cell) {
+                row.style.display = cell.innerText.includes(query) ? "" : "none";
+            }
+        });
+    }
+</script>

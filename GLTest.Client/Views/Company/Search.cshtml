@@ -1,0 +1,38 @@
+﻿@model GLTest.Client.Models.Company
+@{
+    ViewData["Title"] = "Search Company";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Search Company</h1>
+
+    <form asp-action="Search" method="get">
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="searchId" class="form-label">Search by ID</label>
+                <input type="text" name="id" id="searchId" class="form-control" placeholder="Enter Company ID">
+            </div>
+
+            <div class="col-md-6">
+                <label for="searchIsin" class="form-label">Search by ISIN</label>
+                <input type="text" name="isin" id="searchIsin" class="form-control" placeholder="Enter ISIN">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    @if (Model != null)
+    {
+        <div class="mt-4">
+            <h3>Company Details</h3>
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Name:</strong> @Model.Name</li>
+                <li class="list-group-item"><strong>Exchange:</strong> @Model.Exchange</li>
+                <li class="list-group-item"><strong>Ticker:</strong> @Model.Ticker</li>
+                <li class="list-group-item"><strong>ISIN:</strong> @Model.Isin</li>
+                <li class="list-group-item"><strong>Website:</strong> @Model.Website</li>
+            </ul>
+        </div>
+    }
+</div>
