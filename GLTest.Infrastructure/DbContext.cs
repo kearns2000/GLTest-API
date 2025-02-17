@@ -15,7 +15,7 @@ namespace GLTest.Infrastructure.Persistence
             {
                 modelBuilder.Entity<Company>()
                     .HasIndex(c => c.Isin)
-                    .IsUnique(); // Enforce Unique ISIN
+                    .IsUnique(); 
 
                 modelBuilder.Entity<Company>()
                     .Property(c => c.Isin)
